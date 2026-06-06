@@ -1,0 +1,18 @@
+<%
+const currentBook = book || {
+  id: 'featured-1',
+  title: 'Explore Your Knowledge',
+  author: 'Annie Carter',
+  originalPrice: 29,
+  price: 18,
+  image: '/images/placeholder-book.jpg',
+  condition: 'Like New',
+  stock: 12,
+  description: 'A captivating read sourced from premium secondhand collections.',
+  details: 'Paperback, 320 pages, English language.',
+  shipping: 'Ships in 1-2 business days with tracking.'
+};
+const related = relatedBooks || [];
+%>
+<section class="container-main py-12"><div class="grid gap-10 lg:grid-cols-2"><img src="<%= currentBook.image %>" alt="<%= currentBook.title %>" class="h-[520px] w-full rounded-sm object-cover shadow-card"/><div><h1 class="text-3xl font-bold"><%= currentBook.title %></h1><p class="mt-2 text-wisen-gray">By <%= currentBook.author %></p><div class="mt-4 flex items-center gap-3"><span class="text-sm line-through text-wisen-gray">$<%= Number(currentBook.originalPrice).toFixed(2) %></span><span class="text-2xl font-bold">$<%= Number(currentBook.price).toFixed(2) %></span></div><p class="mt-4 text-sm text-wisen-taupe">Condition: <span class="font-semibold"><%= currentBook.condition %></span></p><p class="mt-1 text-sm text-wisen-taupe">Stock: <span class="font-semibold"><%= currentBook.stock %> available</span></p><div class="mt-6 flex items-center gap-3"><label for="qty" class="text-sm">Qty</label><input id="qty" type="number" min="1" value="1" class="w-20 rounded-sm border border-gray-300 px-3 py-2"/></div><button data-add-cart data-id="<%= currentBook.id %>" data-title="<%= currentBook.title %>" data-author="<%= currentBook.author %>" data-price="<%= currentBook.price %>" data-image="<%= currentBook.image %>" class="btn-primary mt-6">Add to Cart</button><div class="mt-10 border-t border-gray-200 pt-6"><div class="space-y-4 text-sm text-wisen-taupe"><details open><summary class="cursor-pointer font-semibold">Description</summary><p class="mt-2"><%= currentBook.description %></p></details><details><summary class="cursor-pointer font-semibold">Details</summary><p class="mt-2"><%= currentBook.details %></p></details><details><summary class="cursor-pointer font-semibold">Shipping</summary><p class="mt-2"><%= currentBook.shipping %></p></details></div></div></div></div></section>
+<section class="container-main pb-16"><h2 class="section-title mb-7">Related Books</h2><div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4"><% related.forEach((book) => { %><%- include('../partials/bookCard', { book }) %><% }) %></div></section>

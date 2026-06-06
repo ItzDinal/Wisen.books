@@ -1,0 +1,22 @@
+﻿<section class="container-main py-16">
+  <div class="mb-10">
+    <p class="text-sm uppercase tracking-[0.35em] text-wisen-taupe">Journal</p>
+    <h1 class="mt-4 text-4xl font-extrabold text-wisen-black">Wisen Journal</h1>
+    <p class="mt-4 max-w-2xl text-base leading-8 text-wisen-navy/80">Stories, reading guides and editorial notes crafted for book lovers who seek a premium secondhand experience.</p>
+  </div>
+  <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+    <% Array.from({length: 6}, (_, i) => i + 1).forEach((n) => { %>
+      <article class="journal-card bg-white">
+        <a href="#" class="block overflow-hidden transition duration-500 hover:scale-[1.02]">
+          <img src="/images/placeholder-book.jpg" alt="Blog <%= n %>" class="h-64 w-full object-cover" />
+        </a>
+        <div class="p-6">
+          <p class="text-xs uppercase tracking-[0.3em] text-wisen-taupe">May <%= 10 + n %>, 2026</p>
+          <h2 class="mt-3 text-2xl font-semibold text-wisen-navy">How to buy quality secondhand books #<%= n %></h2>
+          <p class="mt-3 text-sm leading-7 text-wisen-gray">Tips for checking condition, editions, and value before purchase.</p>
+          <a href="#" class="mt-6 inline-flex text-sm font-semibold text-wisen-primary transition hover:text-wisen-accent">Read more →</a>
+        </div>
+      </article>
+    <% }) %>
+  </div>
+</section>
