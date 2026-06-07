@@ -1,0 +1,24 @@
+<header data-navbar class="sticky top-0 z-50 bg-wisen-navy text-white border-b border-wisen-navy/80 shadow-sm">
+  <div class="w-full px-4 sm:px-6 lg:px-10">
+    <div class="flex h-20 items-center justify-between gap-4">
+      <a href="/" class="ml-4 sm:ml-5 lg:ml-6 flex items-center gap-3">
+        <img src="/images/logo.png" alt="Wisen Book Mart" class="h-8 w-auto object-contain"/>
+        <!-- <span class="hidden text-sm font-semibold uppercase tracking-[0.3em] text-wisen-navy lg:inline">Wisen Book Mart</span> -->
+      </a>
+      <nav class="hidden lg:block">
+        <ul class="flex items-center gap-8 text-sm font-medium">
+          <li><a href="/" class="transition <%= currentPath === '/' ? 'text-wisen-primary' : 'text-white hover:text-wisen-accent' %>">Home</a></li>
+          <li><a href="/shop" class="transition <%= currentPath === '/shop' ? 'text-wisen-primary' : 'text-white hover:text-wisen-accent' %>">Shop</a></li>
+          <li><a href="/blog" class="transition <%= currentPath === '/blog' ? 'text-wisen-primary' : 'text-white hover:text-wisen-accent' %>">Blog</a></li>
+          <li><a href="/contact" class="transition <%= currentPath === '/contact' ? 'text-wisen-primary' : 'text-white hover:text-wisen-accent' %>">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="hidden items-center gap-4 lg:flex">
+        <button aria-label="Search" class="text-white transition hover:text-wisen-accent">&#8981;</button>
+        <a href="/account" aria-label="Account" class="text-white transition hover:text-wisen-accent">&#9711;</a>
+        <a href="/cart" class="relative text-white transition hover:text-wisen-accent" aria-label="Cart">&#128722;<span data-cart-count class="absolute -right-3 -top-2 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-wisen-accent px-1 text-xs font-semibold text-white">0</span></a>
+      </div>
+      <button data-mobile-toggle class="inline-flex items-center justify-center rounded-3xl border border-wisen-gray p-2 text-white lg:hidden" aria-label="Open mobile menu">&#9776;</button>
+    </div>
+  </div>
+</header>
