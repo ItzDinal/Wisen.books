@@ -1,0 +1,39 @@
+﻿<%
+const shopBooks = books || [];
+%>
+<section class="container-main py-12">
+    <div class="mb-8 flex items-center justify-between">
+        <h1 class="text-3xl font-bold">Shop Books</h1>
+        <button data-filter-toggle class="rounded-sm border border-gray-300 px-4 py-2 text-sm lg:hidden">Toggle Filters</button>
+    </div>
+    <div class="grid gap-8 lg:grid-cols-[280px_1fr]">
+        <aside data-filter-sidebar class="space-y-6 rounded-sm border border-gray-200 p-5">
+            <div>
+                <label class="text-sm font-semibold">Search</label>
+                <input data-shop-search type="text" placeholder="Search books or authors" class="mt-2 w-full rounded-sm border border-gray-300 px-3 py-2 text-sm"/>
+            </div>
+            <div>
+                <h3 class="text-sm font-semibold">Categories</h3>
+                <ul class="mt-2 space-y-2 text-sm text-wisen-taupe">
+                    <li>
+                        <label>
+                            <input type="checkbox" class="mr-2">
+                            Fiction
+                        </label>
+                        </li>
+                            <li>
+                                <label>
+                                <input type="checkbox" class="mr-2">
+                                Business
+                            </label>
+                        </li>
+                                
+                        <li>
+                            <label>
+                                <input type="checkbox" class="mr-2">
+                                Biography
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+                <div><h3 class="text-sm font-semibold">Price</h3><ul class="mt-2 space-y-2 text-sm text-wisen-taupe"><li><label><input type="radio" name="price" class="mr-2">Under $10</label></li><li><label><input type="radio" name="price" class="mr-2">$10 - $20</label></li><li><label><input type="radio" name="price" class="mr-2">$20+</label></li></ul></div><div><h3 class="text-sm font-semibold">Authors</h3><ul class="mt-2 space-y-2 text-sm text-wisen-taupe"><li><label><input type="checkbox" class="mr-2">Haruki Murakami</label></li><li><label><input type="checkbox" class="mr-2">Jane Austen</label></li><li><label><input type="checkbox" class="mr-2">George Orwell</label></li></ul></div></aside><div><div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-3"><% shopBooks.forEach((book) => { %><%- include('../partials/bookCard', { book }) %><% }) %></div><div class="mt-10 flex items-center justify-center gap-2"><a href="#" class="rounded-sm border border-gray-300 px-4 py-2 text-sm">Prev</a><a href="#" class="rounded-sm bg-black px-4 py-2 text-sm text-white">1</a><a href="#" class="rounded-sm border border-gray-300 px-4 py-2 text-sm">2</a><a href="#" class="rounded-sm border border-gray-300 px-4 py-2 text-sm">3</a><a href="#" class="rounded-sm border border-gray-300 px-4 py-2 text-sm">Next</a></div></div></div></section>
