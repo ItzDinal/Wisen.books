@@ -15,7 +15,8 @@
       </nav>
       <div class="hidden items-center gap-4 lg:flex">
         <button aria-label="Search" class="text-white transition hover:text-wisen-accent">&#8981;</button>
-        <a href="/account" aria-label="Account" class="text-white transition hover:text-wisen-accent">&#9711;</a>
+        <a href="/login" class="text-sm font-medium text-white transition hover:text-wisen-accent <%= currentPath === '/login' ? 'text-wisen-primary' : '' %>">Login</a>
+        <a href="/register" class="rounded-full bg-wisen-primary px-4 py-2 text-sm font-semibold text-white transition hover:bg-wisen-accent">Register</a>
         <a href="/cart" class="relative text-white transition hover:text-wisen-accent" aria-label="Cart">&#128722;<span data-cart-count class="absolute -right-3 -top-2 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-wisen-accent px-1 text-xs font-semibold text-white">0</span></a>
       </div>
       <button data-mobile-toggle class="inline-flex items-center justify-center rounded-3xl border border-wisen-gray p-2 text-white lg:hidden" aria-label="Open mobile menu">&#9776;</button>
