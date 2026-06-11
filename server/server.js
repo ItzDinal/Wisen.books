@@ -7,8 +7,8 @@ import { fileURLToPath } from "url";
 import expressLayouts from "express-ejs-layouts";
 
 import connectDB from './src/config/mongodb.js';
-import authRouter from './routes/authRoutes.js';
-import userRouter from "./routes/userRoutes.js";
+import authRouter from './src/routes/authRoutes.js';
+import userRouter from './src/routes/userRoutes.js';
 import storeRoutes from './src/routes/storeRoutes.js';
 import adminRoutes from './src/routes/adminRoutes.js';
 import { notFound } from './src/middleware/notFound.js';

@@ -79,4 +79,4 @@ const categories = [
   { id: 'c4', name: 'Science' }
 ];
 
-module.exports = { books, categories };
+export { books, categories };
