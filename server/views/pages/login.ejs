@@ -1,4 +1,12 @@
-﻿<style>
+﻿<%-- =====================================================================
+     views/login.ejs
+     Login page view — renders inside the main EJS layout.
+     Handles: form UI, client-side validation, POST to /api/auth/login,
+     success redirect, and error feedback.
+===================================================================== --%>
+
+<style>
+  /* ── Page wrapper: full-height centered layout with warm off-white bg ── */
   .auth-section {
     min-height: 100vh;
     display: flex;
@@ -7,43 +15,57 @@
     padding: 64px 16px;
     background-color: #f9f6f2;
   }
+
+  /* ── Constrain card width on larger screens ── */
   .auth-box {
     width: 100%;
     max-width: 440px;
   }
+
+  /* ── Header block above the card ── */
   .auth-header {
     text-align: center;
     margin-bottom: 32px;
   }
+
+  /* ── Small all-caps label above the title ── */
   .auth-caption {
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.3em;
     color: #9e8f85;
   }
+
+  /* ── Main page heading ── */
   .auth-title {
     margin-top: 12px;
     font-size: 32px;
     font-weight: 800;
     color: #0b090a;
   }
+
+  /* ── "Don't have an account?" line with register link ── */
   .auth-subtitle {
     margin-top: 10px;
     font-size: 14px;
     color: #555;
   }
   .auth-subtitle a {
-    color: #a4161a;
+    color: #a4161a;       /* brand red */
     font-weight: 600;
     text-decoration: none;
   }
   .auth-subtitle a:hover { color: #e5383b; }
+
+  /* ── White rounded card that wraps the form ── */
   .auth-card {
     background: #fff;
     border-radius: 28px;
     padding: 36px;
     box-shadow: 0 20px 50px rgba(11,9,10,0.08);
   }
+
+  /* ── Feedback banner (hidden by default, shown via JS) ── */
   .auth-message {
     display: none;
     margin-bottom: 20px;
@@ -51,24 +73,36 @@
     padding: 12px 16px;
     font-size: 14px;
   }
+
+  /* ── Success state: green tint ── */
   .auth-message.success {
     background: #f0fdf4;
     border: 1px solid #bbf7d0;
     color: #15803d;
   }
+
+  /* ── Error state: red tint ── */
   .auth-message.error {
     background: #fef2f2;
     border: 1px solid #fecaca;
     color: #dc2626;
   }
+
+  /* ── Form layout: vertical stack with consistent gap ── */
   .auth-form { display: flex; flex-direction: column; gap: 20px; }
+
+  /* ── Each label + input pair ── */
   .form-group { display: flex; flex-direction: column; gap: 8px; }
+
+  /* ── All-caps micro label above each input ── */
   .form-label {
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.25em;
     color: #9e8f85;
   }
+
+  /* ── Text/email/password input base styles ── */
   .form-input {
     width: 100%;
     border: 1px solid #ede8e3;
@@ -81,7 +115,11 @@
     box-sizing: border-box;
     transition: border-color 0.2s;
   }
+
+  /* ── Highlight border on focus ── */
   .form-input:focus { border-color: #a4161a; }
+
+  /* ── "Forgot password?" link aligned to the right ── */
   .forgot-link {
     text-align: right;
     font-size: 12px;
@@ -90,6 +128,8 @@
     font-weight: 500;
   }
   .forgot-link:hover { color: #e5383b; }
+
+  /* ── Full-width submit button with brand red background ── */
   .auth-btn {
     width: 100%;
     background: #a4161a;
@@ -104,72 +144,138 @@
     transition: background 0.2s;
   }
   .auth-btn:hover { background: #e5383b; }
+
+  /* ── Dimmed + non-interactive while request is in flight ── */
   .auth-btn:disabled { opacity: 0.7; cursor: not-allowed; }
 </style>
 
+<!-- ================================================================
+     LOGIN SECTION
+     Full-viewport centered layout containing header + form card
+================================================================ -->
 <section class="auth-section">
   <div class="auth-box">
+
+    <!-- Page heading and register link -->
     <div class="auth-header">
       <p class="auth-caption">Welcome Back</p>
       <h1 class="auth-title">Sign in to your account</h1>
-      <p class="auth-subtitle">Don't have an account? <a href="/register">Register here</a></p>
+      <p class="auth-subtitle">
+        Don't have an account? <a href="/register">Register here</a>
+      </p>
     </div>
+
+    <!-- Form card -->
     <div class="auth-card">
+
+      <!-- Feedback banner: toggled by JS to show success / error messages -->
       <div id="auth-message" class="auth-message"></div>
+
+      <!-- Login form — submission handled entirely via fetch (no page reload) -->
       <form id="login-form" class="auth-form">
+
+        <!-- Email field -->
         <div class="form-group">
           <label class="form-label">Email Address</label>
-          <input type="email" id="email" required placeholder="you@example.com" class="form-input" />
+          <input
+            type="email"
+            id="email"
+            required
+            placeholder="you@example.com"
+            class="form-input"
+          />
         </div>
+
+        <!-- Password field -->
         <div class="form-group">
           <label class="form-label">Password</label>
-          <input type="password" id="password" required placeholder="••••••••" class="form-input" />
+          <input
+            type="password"
+            id="password"
+            required
+            placeholder="••••••••"
+            class="form-input"
+          />
         </div>
+
+        <!-- Forgot password link — routes to password reset page -->
         <a href="/reset-password" class="forgot-link">Forgot password?</a>
+
+        <!-- Submit button — disabled while the fetch request is in flight -->
         <button type="submit" id="login-btn" class="auth-btn">Sign In</button>
+
       </form>
-    </div>
-  </div>
-</section>
+    </div><!-- /.auth-card -->
+  </div><!-- /.auth-box -->
+</section><!-- /.auth-section -->
+
 
 <script>
+  /**
+   * Login form submit handler
+   * ─────────────────────────
+   * 1. Prevents default form submission (no full page reload).
+   * 2. Disables the button and clears any previous feedback message.
+   * 3. POSTs credentials as JSON to /api/auth/login.
+   * 4. On success → shows a success banner, then redirects to home after 1 s.
+   * 5. On API error → shows the server's error message in the error banner.
+   * 6. On network/parse error → shows a generic fallback error message.
+   */
   document.getElementById('login-form').addEventListener('submit', async (e) => {
     e.preventDefault();
+
     const btn = document.getElementById('login-btn');
     const msg = document.getElementById('auth-message');
+
+    // ── Lock UI while request is in flight ──
     btn.textContent = 'Signing in…';
     btn.disabled = true;
+
+    // ── Reset any previous feedback banner ──
     msg.className = 'auth-message';
     msg.style.display = 'none';
+
     try {
+      // ── Send credentials to the auth API ──
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
+        credentials: 'include',          // include cookies (JWT httpOnly cookie)
         body: JSON.stringify({
-          email: document.getElementById('email').value,
+          email:    document.getElementById('email').value,
           password: document.getElementById('password').value
         })
       });
+
       const data = await res.json();
+
       if (data.success) {
+        // ── Success: show banner, redirect to home after 1 second ──
         msg.textContent = 'Login successful! Redirecting…';
-        msg.className = 'auth-message success';
+        msg.className   = 'auth-message success';
         msg.style.display = 'block';
         setTimeout(() => window.location.href = '/', 1000);
+
       } else {
-        msg.textContent = data.message || 'Login failed.';
-        msg.className = 'auth-message error';
+        // ── API returned an error (wrong password, user not found, etc.) ──
+        msg.textContent   = data.message || 'Login failed.';
+        msg.className     = 'auth-message error';
         msg.style.display = 'block';
+
+        // Re-enable button so the user can try again
         btn.textContent = 'Sign In';
-        btn.disabled = false;
+        btn.disabled    = false;
       }
+
     } catch {
-      msg.textContent = 'Something went wrong.';
-      msg.className = 'auth-message error';
+      // ── Network failure or JSON parse error ──
+      msg.textContent   = 'Something went wrong.';
+      msg.className     = 'auth-message error';
       msg.style.display = 'block';
+
+      // Re-enable button so the user can try again
       btn.textContent = 'Sign In';
-      btn.disabled = false;
+      btn.disabled    = false;
     }
   });
 </script>
